@@ -326,12 +326,13 @@ a {
 
 .btn-form {
   border: none;
-  cursor: not-allowed;
+  cursor: pointer;
   width: 100%;
 }
 
 .btn-form[disabled] {
   background: #c9b9ad;
+  cursor: not-allowed;
 }
 
 /* Sections */
