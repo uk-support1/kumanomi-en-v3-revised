@@ -2125,6 +2125,11 @@ a {
     word-break: break-word;
   }
 
+  /* ファーストビュー説明文：狭い画面でも意味のまとまりの位置で改行する */
+  .hero-lead-phrase {
+    display: inline-block;
+  }
+
   /* 料金表：項目名を折り返し可・金額側は1行を維持して崩れを防ぐ */
   .price-detail-row {
     align-items: baseline;
