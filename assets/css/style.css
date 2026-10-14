@@ -1831,9 +1831,18 @@ a {
     gap: 24px;
   }
 
+  /* 4枚を横一列に並べる幅(196px×4＋隙間)が確保できない画面幅では、
+     枠を最大196pxのまま均等に縮めて、横スクロールが出ないようにする */
+  .about-charm {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: 196px;
+  }
+
   .about-charm-frame {
-    width: 196px;
-    height: 196px;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
   }
 
   .about-charm-meal {
