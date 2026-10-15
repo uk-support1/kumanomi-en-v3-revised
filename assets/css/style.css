@@ -820,6 +820,7 @@ a {
 }
 
 .coral-scene-inner {
+  --pz: 1.3;
   max-width: 1120px;
   margin: 48px auto 0;
   display: flex;
@@ -943,13 +944,15 @@ a {
   --dy: 46px;
   position: absolute;
   margin: 0;
-  width: 118px;
+  width: var(--w, 118px);
+  left: calc(var(--cx) - var(--w, 118px) / 2);
+  bottom: calc(var(--cy) - var(--w, 118px) / var(--ratio, 1.2) / 2);
   border-radius: var(--radius);
   overflow: hidden;
   background: #fff;
   box-shadow: 0 8px 18px rgba(47, 107, 124, 0.18);
   opacity: 0;
-  transform: translate(var(--dx), var(--dy)) scale(0.5) rotate(var(--rot));
+  transform: translate(var(--dx), var(--dy)) scale(calc(0.5 * var(--pz, 1))) rotate(var(--rot));
   transition: opacity 0.45s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   transition-delay: var(--exit-delay, 0s);
   z-index: 0;
@@ -960,7 +963,7 @@ a {
 .coral-cluster:hover .coral-photo,
 .coral-cluster:focus-within .coral-photo {
   opacity: 1;
-  transform: translate(0, 0) scale(1) rotate(var(--rot));
+  transform: translate(0, 0) scale(var(--pz, 1)) rotate(var(--rot));
   transition-delay: var(--enter-delay, 0s);
   z-index: 3;
   pointer-events: auto;
@@ -973,7 +976,8 @@ a {
 
 .coral-photo img {
   width: 100%;
-  height: 100px;
+  height: auto;
+  aspect-ratio: var(--ratio, 1.2);
   object-fit: cover;
   object-position: 50% 38%;
   display: block;
@@ -994,19 +998,15 @@ a {
   --exit-delay: 0s;
 }
 
-/* ホームのようす：規則正しい扇形ではなく、サンゴの周りから自然に飛び出す不規則配置 */
-.coral-cluster-room .coral-photo {
-  width: 80px;
-}
-
-.coral-cluster-room .coral-photo img {
-  height: 68px;
-}
-
+/* 写真1枚ごとの設定
+   --w: 幅(px) / --ratio: 縦横比(幅÷高さ。元写真に近づけて被写体の欠けを減らす) /
+   --cx, --cy: 写真の中心位置(サンゴ枠の左端・下端からの%)。表示は --pz 倍に拡大される */
+/* ホームのようす */
 .coral-cluster-room .coral-photo-1 {
-  width: 88px;
-  left: -11%;
-  bottom: 0%;
+  --w: 88px;
+  --ratio: 1.35;
+  --cx: 18.1%;
+  --cy: 16.7%;
   --rot: -8deg;
   --dx: 70px;
   --dy: 14px;
@@ -1014,14 +1014,11 @@ a {
   --exit-delay: 0.4s;
 }
 
-.coral-cluster-room .coral-photo-1 img {
-  height: 74px;
-}
-
 .coral-cluster-room .coral-photo-2 {
-  width: 70px;
-  left: 11%;
-  bottom: 22%;
+  --w: 66px;
+  --ratio: 1;
+  --cx: 21.4%;
+  --cy: 45.8%;
   --rot: 6deg;
   --dx: 34px;
   --dy: 38px;
@@ -1029,14 +1026,11 @@ a {
   --exit-delay: 0.3s;
 }
 
-.coral-cluster-room .coral-photo-2 img {
-  height: 60px;
-}
-
 .coral-cluster-room .coral-photo-3 {
-  width: 80px;
-  left: 34%;
-  bottom: 6%;
+  --w: 74px;
+  --ratio: 1;
+  --cx: 48.1%;
+  --cy: 28.5%;
   --rot: -5deg;
   --dx: 6px;
   --dy: 50px;
@@ -1045,9 +1039,10 @@ a {
 }
 
 .coral-cluster-room .coral-photo-4 {
-  width: 76px;
-  right: 11%;
-  bottom: 26%;
+  --w: 76px;
+  --ratio: 1.3;
+  --cx: 76.5%;
+  --cy: 47%;
   --rot: 9deg;
   --dx: -30px;
   --dy: 40px;
@@ -1055,14 +1050,11 @@ a {
   --exit-delay: 0.1s;
 }
 
-.coral-cluster-room .coral-photo-4 img {
-  height: 64px;
-}
-
 .coral-cluster-room .coral-photo-5 {
-  width: 90px;
-  right: -10%;
-  bottom: 2%;
+  --w: 90px;
+  --ratio: 1.3;
+  --cx: 78.9%;
+  --cy: 17.4%;
   --rot: -7deg;
   --dx: -66px;
   --dy: 16px;
@@ -1070,46 +1062,48 @@ a {
   --exit-delay: 0s;
 }
 
-.coral-cluster-room .coral-photo-5 img {
-  height: 76px;
-}
-
-/* お食事：扇状に広がる配置 */
-.coral-cluster-meal .coral-photo {
-  width: 96px;
-}
-
-.coral-cluster-meal .coral-photo img {
-  height: 82px;
-}
-
+/* お食事 */
 .coral-cluster-meal .coral-photo-1 {
-  left: -16%;
-  bottom: 0%;
+  --w: 96px;
+  --ratio: 1.3;
+  --cx: 23.7%;
+  --cy: 13.7%;
   --rot: -10deg;
   --dx: 62px;
   --dy: 22px;
+  --enter-delay: 0s;
+  --exit-delay: 0.3s;
 }
 
 .coral-cluster-meal .coral-photo-2 {
-  left: 16%;
-  bottom: 20%;
+  --w: 96px;
+  --ratio: 1.3;
+  --cx: 27.7%;
+  --cy: 37%;
   --rot: 4deg;
   --dx: 20px;
   --dy: 50px;
+  --enter-delay: 0.15s;
+  --exit-delay: 0.15s;
 }
 
 .coral-cluster-meal .coral-photo-3 {
-  left: 44%;
-  bottom: 2%;
+  --w: 96px;
+  --ratio: 1.35;
+  --cx: 69.3%;
+  --cy: 12.3%;
   --rot: -6deg;
   --dx: -20px;
   --dy: 28px;
+  --enter-delay: 0.3s;
+  --exit-delay: 0s;
 }
 
 .coral-cluster-meal .coral-photo-4 {
-  right: -16%;
-  bottom: 12%;
+  --w: 96px;
+  --ratio: 1.15;
+  --cx: 73.1%;
+  --cy: 35.9%;
   --rot: 9deg;
   --dx: -62px;
   --dy: 34px;
@@ -1117,42 +1111,48 @@ a {
   --exit-delay: 0s;
 }
 
-/* 季節のお楽しみ：少し上方向に展開する配置 */
-.coral-cluster-season .coral-photo {
-  width: 102px;
-}
-
-.coral-cluster-season .coral-photo img {
-  height: 86px;
-}
-
+/* 季節のお楽しみ */
 .coral-cluster-season .coral-photo-1 {
-  left: 2%;
-  bottom: 4%;
+  --w: 102px;
+  --ratio: 1.5;
+  --cx: 20.4%;
+  --cy: 16.3%;
   --rot: -4deg;
   --dx: 42px;
   --dy: 34px;
+  --enter-delay: 0s;
+  --exit-delay: 0.3s;
 }
 
 .coral-cluster-season .coral-photo-2 {
-  left: 24%;
-  bottom: 22%;
+  --w: 102px;
+  --ratio: 1.4;
+  --cx: 31.5%;
+  --cy: 45.8%;
   --rot: 3deg;
   --dx: -8px;
   --dy: 46px;
+  --enter-delay: 0.15s;
+  --exit-delay: 0.15s;
 }
 
 .coral-cluster-season .coral-photo-3 {
-  left: 44%;
-  bottom: 38%;
+  --w: 102px;
+  --ratio: 1.3;
+  --cx: 69.3%;
+  --cy: 40.1%;
   --rot: -3deg;
   --dx: -42px;
   --dy: 55px;
+  --enter-delay: 0.3s;
+  --exit-delay: 0s;
 }
 
 .coral-cluster-season .coral-photo-4 {
-  left: 64%;
-  bottom: 54%;
+  --w: 102px;
+  --ratio: 1.3;
+  --cx: 76.8%;
+  --cy: 72.2%;
   --rot: 4deg;
   --dx: -66px;
   --dy: 62px;
@@ -1872,6 +1872,7 @@ a {
   }
 
   .coral-scene-inner {
+    --pz: 1.3;
     flex-direction: row;
     justify-content: center;
     align-items: flex-end;
@@ -1890,120 +1891,106 @@ a {
     width: 320px;
   }
 
-  .coral-photo {
-    width: 138px;
-  }
-
-  .coral-photo img {
-    height: 118px;
-  }
-
-  .coral-cluster-room .coral-photo {
-    width: 96px;
-  }
-
-  .coral-cluster-room .coral-photo img {
-    height: 82px;
-  }
-
   .coral-cluster-room .coral-photo-1 {
-    width: 92px;
+    --w: 92px;
+    --cx: 13.5%;
+    --cy: 16.6%;
     --dx: 84px;
     --dy: 20px;
   }
 
-  .coral-cluster-room .coral-photo-1 img {
-    height: 78px;
-  }
-
   .coral-cluster-room .coral-photo-2 {
-    width: 72px;
+    --w: 68px;
+    --cx: 24.7%;
+    --cy: 44.2%;
     --dx: 42px;
     --dy: 46px;
   }
 
-  .coral-cluster-room .coral-photo-2 img {
-    height: 62px;
-  }
-
   .coral-cluster-room .coral-photo-3 {
-    width: 84px;
+    --w: 78px;
+    --cx: 48.2%;
+    --cy: 21.2%;
     --dx: 8px;
     --dy: 60px;
   }
 
   .coral-cluster-room .coral-photo-4 {
-    width: 80px;
+    --w: 80px;
+    --cx: 74.7%;
+    --cy: 45.3%;
     --dx: -36px;
     --dy: 48px;
   }
 
-  .coral-cluster-room .coral-photo-4 img {
-    height: 68px;
-  }
-
   .coral-cluster-room .coral-photo-5 {
-    width: 94px;
+    --w: 94px;
+    --cx: 86.1%;
+    --cy: 17.3%;
     --dx: -80px;
     --dy: 20px;
   }
 
-  .coral-cluster-room .coral-photo-5 img {
-    height: 80px;
-  }
-
-  .coral-cluster-meal .coral-photo {
-    width: 112px;
-  }
-
-  .coral-cluster-meal .coral-photo img {
-    height: 96px;
-  }
-
   .coral-cluster-meal .coral-photo-1 {
+    --w: 112px;
+    --cx: 22.8%;
+    --cy: 16.1%;
     --dx: 78px;
     --dy: 26px;
   }
 
   .coral-cluster-meal .coral-photo-2 {
+    --w: 112px;
+    --cx: 25.6%;
+    --cy: 42.2%;
     --dx: 26px;
     --dy: 58px;
   }
 
   .coral-cluster-meal .coral-photo-3 {
+    --w: 112px;
+    --cx: 73%;
+    --cy: 14.5%;
     --dx: -26px;
     --dy: 34px;
   }
 
   .coral-cluster-meal .coral-photo-4 {
+    --w: 112px;
+    --cx: 77%;
+    --cy: 40.3%;
     --dx: -78px;
     --dy: 40px;
   }
 
-  .coral-cluster-season .coral-photo {
-    width: 122px;
-  }
-
-  .coral-cluster-season .coral-photo img {
-    height: 104px;
-  }
-
   .coral-cluster-season .coral-photo-1 {
+    --w: 122px;
+    --cx: 19.1%;
+    --cy: 18.7%;
     --dx: 52px;
     --dy: 36px;
   }
 
   .coral-cluster-season .coral-photo-2 {
+    --w: 122px;
+    --cx: 32.7%;
+    --cy: 50.8%;
     --dx: -10px;
     --dy: 50px;
   }
 
   .coral-cluster-season .coral-photo-3 {
+    --w: 122px;
+    --cx: 68.5%;
+    --cy: 36%;
     --dx: -52px;
     --dy: 60px;
   }
 
   .coral-cluster-season .coral-photo-4 {
+    --w: 122px;
+    --cx: 80.8%;
+    --cy: 70%;
     --dx: -80px;
     --dy: 72px;
   }
