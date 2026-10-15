@@ -1,0 +1,13 @@
+# 【提案のみ・そのままアップロードしないこと】
+# 本番サーバー(heteml)に既にある .htaccess がある場合は、上書きせず、その末尾に追記する。
+# 追記前に必ず現在の .htaccess をバックアップし、反映後は下の4つのURLで確認する。
+#   http://kumanomien.co.jp/   http://www.kumanomien.co.jp/
+#   https://www.kumanomien.co.jp/   https://kumanomien.co.jp/ (これだけが200、他は https://kumanomien.co.jp/ へ301)
+#
+# 目的: 現在は http/https・www あり/なしの4通りがすべて200で同じページを返すため、
+#       https://kumanomien.co.jp/ に1本化する(検索エンジンへ正規のURLを明示する)。
+
+RewriteEngine On
+RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTP_HOST} ^www\. [NC]
+RewriteRule ^ https://kumanomien.co.jp%{REQUEST_URI} [L,R=301]
