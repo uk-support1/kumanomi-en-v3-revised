@@ -1761,10 +1761,17 @@ a {
   padding: 10px 12px;
   border: 1px solid var(--color-border);
   border-radius: 8px;
-  font-size: 0.95rem;
+  /* 16px未満だと、iPhoneのSafariが入力欄にふれた時に画面を自動で拡大してしまう */
+  font-size: 1rem;
   font-family: inherit;
   background: #fff;
   color: var(--color-text);
+}
+
+/* 押しやすいよう、1行の入力欄と選択欄は高さを揃えて広げる */
+.form-row input,
+.form-row select {
+  min-height: 48px;
 }
 
 .form-row textarea {
